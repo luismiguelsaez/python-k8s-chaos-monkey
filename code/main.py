@@ -1,7 +1,8 @@
 from kubernetes import client, config
-from os import getenv, environ
+from os import environ
 from sys import exit
 from time import sleep
+from random import randrange
 
 def main():
 
@@ -36,6 +37,9 @@ def main():
         #print("%s\t%s\t%s" % (pod.metadata.name, pod.status.phase, pod.status.pod_ip))
 
       print("Got [%s] pods from resource of type [%s]" % ( str(c), pod_list.kind ) )
+
+      pod_item = randrange(1,c)
+      print("Going to kill pod number [%s] of [%s]" % ( str(pod_item), str(c) ) )
 
       print("Sleeping for [%s] seconds ..." % ( interval ) )
       sleep(int(interval))
