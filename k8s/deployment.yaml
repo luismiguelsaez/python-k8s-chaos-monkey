@@ -25,3 +25,5 @@ spec:
           env:
             - name: CM_NAMESPACE
               value: chaos
+            - name: CM_INTERVAL
+              value: "5"

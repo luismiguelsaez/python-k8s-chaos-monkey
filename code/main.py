@@ -12,8 +12,9 @@ def main():
       exit(1)
 
     namespace = getenv('CM_NAMESPACE')
+    interval  = getenv('CM_INTERVAL')
 
-    print("Getting pods from namespace [%s]" % namespace)
+    print("Getting pods from namespace [%s]" % ( namespace ) )
 
     v1 = client.CoreV1Api()
 
@@ -21,15 +22,18 @@ def main():
       try:
         pod_list = v1.list_namespaced_pod(namespace=namespace)
       except client.exceptions.ApiException as p_exec:
-        print("Insuficient permissions while trying to get pods from namespace [%s]! Exiting ..." % namespace)
+        print("Insuficient permissions while trying to get pods from namespace [%s]! Exiting ..." % ( namespace ) )
         exit(1)
 
-      print("Got resources of type [%s]" % pod_list.kind)
-
+      c=0
       for pod in pod_list.items:
-          print("%s\t%s\t%s" % (pod.metadata.name, pod.status.phase, pod.status.pod_ip))
+        c+=1
+        #print("%s\t%s\t%s" % (pod.metadata.name, pod.status.phase, pod.status.pod_ip))
 
-      sleep(1)
+      print("Got [%s] pods from resource of type [%s]" % ( str(c), pod_list.kind ) )
+
+      print("Sleeping for [%s] seconds ..." % ( interval ) )
+      sleep(int(interval))
 
 
 if __name__ == '__main__':
