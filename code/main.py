@@ -31,15 +31,20 @@ def main():
         print("Insuficient permissions while trying to get pods from namespace [%s]! Exiting ..." % ( namespace ) )
         exit(1)
 
-      c=0
+      c = 0
       for pod in pod_list.items:
-        c+=1
+        c += 1
         #print("%s\t%s\t%s" % (pod.metadata.name, pod.status.phase, pod.status.pod_ip))
 
       print("Got [%s] pods from resource of type [%s]" % ( str(c), pod_list.kind ) )
 
-      pod_item = randrange(1,c)
-      print("Going to kill pod number [%s] of [%s]" % ( str(pod_item), str(c) ) )
+      if c > 0:
+        pod_item_number = randrange(1,c+1)
+        print("Going to kill pod number [%s] of [%s]" % ( str(pod_item_number), str(c) ) )
+        pod_item = pod_list.items[pod_item_number-1]
+        v1.delete_namespaced_pod(pod_item.metadata.name, namespace)
+      else:
+        print("Skipping, as no pods were found in namespace [%s]" % ( namespace ) )
 
       print("Sleeping for [%s] seconds ..." % ( interval ) )
       sleep(int(interval))

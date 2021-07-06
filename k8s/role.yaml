@@ -17,27 +17,26 @@ automountServiceAccountToken: true
 ---
 
 apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
+kind: ClusterRole
 metadata:
   namespace: chaos
   name: pod-controller
 rules:
 - apiGroups: [""]
   resources: ["pods"]
-  verbs: ["get", "watch", "list"]
+  verbs: ["get", "watch", "list", "delete"]
 
 ---
 
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+kind: ClusterRoleBinding
 metadata:
   name: pod-controller
-  namespace: chaos
 subjects:
   - kind: ServiceAccount
     name: pod-controller
     namespace: chaos
 roleRef:
-  kind: Role
+  kind: ClusterRole
   name: pod-controller
   apiGroup: rbac.authorization.k8s.io

@@ -24,6 +24,6 @@ spec:
           imagePullPolicy: Never # Set to 'Never', because it's mandatory for kind loaded images
           env:
             - name: CM_NAMESPACE
-              value: chaos
+              value: nginx
             - name: CM_INTERVAL
               value: "5"

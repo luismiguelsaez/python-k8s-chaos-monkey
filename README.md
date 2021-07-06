@@ -32,7 +32,8 @@ kind load docker-image chaos-monkey:latest --name chaos-monkey
 docker exec -it chaos-monkey-control-plane crictl images
 ```
 
-### Deploy application
+### Deploy applications
 ```
-kubectl apply -f k8s/deployment
+kubectl apply -f k8s/deployment-nginx.yaml
+kubectl apply -f k8s/deployment-chaos.yaml
 ```
