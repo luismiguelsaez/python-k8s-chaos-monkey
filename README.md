@@ -42,3 +42,8 @@ Once deployed, we can see the pods randomly being killed by the application
 ```
 kubectl get pods -n nginx
 ```
+We can launch requests against `nginx` service to see if it's still working
+```
+k run test -n nginx --rm=true -it --image=alpine:3.12 --restart=Never --command -- sh
+/ # wget -q http://nginx.nginx.svc -O-
+```
