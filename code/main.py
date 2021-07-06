@@ -3,8 +3,14 @@ from os import environ
 from sys import exit
 from time import sleep
 from random import randrange
+from prometheus_client import Counter, start_http_server
 
 def main():
+
+    # Initialize prometheus metrics
+    prom_count_killed = Counter('container_killed', 'Killed containers count')
+
+    start_http_server(8080)
 
     # Create config object from internal mounted credentials
     try:
@@ -54,6 +60,8 @@ def main():
           v1.delete_namespaced_pod(pod_running_list[pod_item_number-1], namespace)
         except Exception as d_exc:
           print("Not able to delete pod due to exception: %s" % ( d_exc.message ) )
+        # Increment killed containers prometheus metric
+        prom_count_killed.inc(1)
       else:
         print("Skipping, as no pods were found in namespace [%s]" % ( namespace ) )
 

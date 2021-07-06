@@ -38,12 +38,25 @@ We're going to create an `victim` deployment ( nginx ) and a `chaos` deployment
 kubectl apply -f k8s/deployment-nginx.yaml
 kubectl apply -f k8s/deployment-chaos.yaml
 ```
+
+## Test
+### Killing containers
 Once deployed, we can see the pods randomly being killed by the application
 ```
 kubectl get pods -n nginx
 ```
+### Attacked service
 We can launch requests against `nginx` service to see if it's still working
 ```
-k run test -n nginx --rm=true -it --image=alpine:3.12 --restart=Never --command -- sh
+kubectl run test -n nginx --rm=true -it --image=alpine:3.12 --restart=Never --command -- sh
 / # wget -q http://nginx.nginx.svc -O-
+```
+### Prometheus metrics
+Get prometheus killed containers metric through configured service
+```
+kubectl run test -n chaos --rm=true -it --image=alpine:3.12 --restart=Never --command -- sh
+/ # wget chaos-monkey:8080 -q -O- | grep container_killed_total
+# HELP container_killed_total Killed containers count
+# TYPE container_killed_total counter
+container_killed_total 28.0
 ```

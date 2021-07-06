@@ -1,5 +1,21 @@
 ---
 
+apiVersion: v1
+kind: Service
+metadata:
+  name: chaos-monkey
+  namespace: chaos
+spec:
+  selector:
+    app: chaos-monkey
+  ports:
+    - name: metrics
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -27,3 +43,6 @@ spec:
               value: nginx
             - name: CM_INTERVAL
               value: "5"
+          ports:
+            - containerPort: 8080
+          

@@ -14,4 +14,6 @@ ADD code/ /app
 RUN chown -R executor.executor /app
 USER executor
 
+EXPOSE 8080
+
 ENTRYPOINT ["python","main.py"]
