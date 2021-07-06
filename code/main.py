@@ -1,5 +1,5 @@
 from kubernetes import client, config
-from os import getenv
+from os import getenv, environ
 from sys import exit
 from time import sleep
 
@@ -11,8 +11,13 @@ def main():
       print("Kubernetes API not reachable! Exiting application ...")
       exit(1)
 
-    namespace = getenv('CM_NAMESPACE')
-    interval  = getenv('CM_INTERVAL')
+    for param in ["CM_NAMESPACE","CM_INTERVAL"]:
+      if param not in environ:
+        print("Required environment variable [%s] not set! Exiting ..." % ( param ) )
+        exit(1)
+
+    namespace = environ['CM_NAMESPACE']
+    interval  = environ['CM_INTERVAL']
 
     print("Getting pods from namespace [%s]" % ( namespace ) )
 
