@@ -42,7 +42,10 @@ def main():
         pod_item_number = randrange(1,c+1)
         print("Going to kill pod number [%s] of [%s]" % ( str(pod_item_number), str(c) ) )
         pod_item = pod_list.items[pod_item_number-1]
-        v1.delete_namespaced_pod(pod_item.metadata.name, namespace)
+        try:
+          v1.delete_namespaced_pod(pod_item.metadata.name, namespace)
+        except Exception as d_exc:
+          print("Not able to delete pod due to exception: %s" % ( d_exc.message ) )
       else:
         print("Skipping, as no pods were found in namespace [%s]" % ( namespace ) )
 
