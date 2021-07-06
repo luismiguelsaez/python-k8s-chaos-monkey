@@ -32,8 +32,13 @@ kind load docker-image chaos-monkey:latest --name chaos-monkey
 docker exec -it chaos-monkey-control-plane crictl images
 ```
 
-### Deploy applications
+## Deploy applications
+We're going to create an `victim` deployment ( nginx ) and a `chaos` deployment
 ```
 kubectl apply -f k8s/deployment-nginx.yaml
 kubectl apply -f k8s/deployment-chaos.yaml
+```
+Once deployed, we can see the pods randomly being killed by the application
+```
+kubectl get pods -n nginx
 ```
