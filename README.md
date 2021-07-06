@@ -9,15 +9,30 @@ Python K8S chaos monkey
 
 ## Cluster setup
 
-### Start minikube cluster
+### Start kind cluster
 ```
-minikube start
+kind create cluster --name chaos-monkey
 ```
 
-### Setup
+### Configure needed role and permissions
 ```
 kubectl apply -f k8s/role.yaml
 ```
 
+## Build application
 
-k run test -n chaos --serviceaccount=pod-controller --rm=true -it --image=python:3.9-alpine --restart=Never --command -- sh
+### Build image
+```
+docker build -t chaos-monkey:latest .
+```
+
+### Load image into cluster
+```
+kind load docker-image chaos-monkey:latest --name chaos-monkey
+docker exec -it chaos-monkey-control-plane crictl images
+```
+
+### Deploy application
+```
+kubectl apply -f k8s/deployment
+```

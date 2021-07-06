@@ -1,0 +1,27 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chaos-monkey
+  namespace: chaos
+  labels:
+    app: chaos-monkey
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chaos-monkey
+  template:
+    metadata:
+      labels:
+        app: chaos-monkey
+    spec:
+      serviceAccount: pod-controller
+      containers:
+        - name: pod-executor
+          image: chaos-monkey:latest
+          imagePullPolicy: Never # Set to 'Never', because it's mandatory for kind loaded images
+          env:
+            - name: CM_NAMESPACE
+              value: chaos
