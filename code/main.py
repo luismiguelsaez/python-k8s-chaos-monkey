@@ -20,13 +20,14 @@ def main():
       exit(1)
 
     # Check mandatory environment variables
-    for param in ["CM_NAMESPACE","CM_INTERVAL"]:
+    for param in ["CM_NAMESPACE","CM_INTERVAL","CM_LABELS"]:
       if param not in environ:
         print("Required environment variable [%s] not set! Exiting ..." % ( param ) )
         exit(1)
 
     namespace = environ['CM_NAMESPACE']
     interval  = environ['CM_INTERVAL']
+    labels = environ['CM_LABELS']
 
     print("Getting pods from namespace [%s]" % ( namespace ) )
 
@@ -36,7 +37,7 @@ def main():
     while True:
       try:
         # Get pods in the selected namespace
-        pod_list = v1.list_namespaced_pod(namespace=namespace)
+        pod_list = v1.list_namespaced_pod(namespace=namespace,label_selector=labels)
       except client.exceptions.ApiException as p_exec:
         print("Insuficient permissions while trying to get pods from namespace [%s]! Exiting ..." % ( namespace ) )
         exit(1)

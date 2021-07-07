@@ -43,6 +43,8 @@ spec:
               value: nginx
             - name: CM_INTERVAL
               value: "5"
+            - name: CM_LABELS
+              value: app=nginx
           ports:
             - containerPort: 8080
           
